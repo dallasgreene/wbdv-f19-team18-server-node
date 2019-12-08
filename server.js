@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+require('./data/db')();
+
 const bodyParser = require('body-parser');
 
 app.listen(4000);
