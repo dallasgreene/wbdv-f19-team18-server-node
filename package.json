@@ -1,0 +1,22 @@
+{
+  "name": "wbdv-f19-team18-server-node",
+  "version": "1.0.0",
+  "description": "server for team 18 recipe site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dallasgreene/wbdv-f19-team18-server-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dallasgreene/wbdv-f19-team18-server-node/issues"
+  },
+  "homepage": "https://github.com/dallasgreene/wbdv-f19-team18-server-node#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
