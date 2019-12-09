@@ -10,7 +10,7 @@ const recipeSchema = mongoose.Schema({
     diets: Array,
     instructions: String,
     likedBy: Array,
-    reviews: Array
+    comments: Array
 }, { collection: 'recipe' });
 
 module.exports = recipeSchema;
