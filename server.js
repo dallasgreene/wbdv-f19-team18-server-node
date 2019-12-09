@@ -27,3 +27,6 @@ app.get("/hello", (req, res) => {
 
 require('./services/user.service.server')(app);
 require('./services/admin.service.server')(app);
+require('./services/recipe.service.server')(app);
+require('./services/recipeInteraction.service.server')(app);
+require('./services/comment.service.server')(app);
