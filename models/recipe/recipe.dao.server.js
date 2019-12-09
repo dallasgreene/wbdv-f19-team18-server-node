@@ -6,6 +6,10 @@ const findAllRecipes = () => {
     return recipeModel.find();
 };
 
+const findAllRecipesIn = idList => {
+    return recipeModel.find({ _id: { $in: idList } }, '_id title image readyInMinutes servings');
+};
+
 const findRecipeById = recipeId => {
     return recipeModel.findById(recipeId);
 };
@@ -28,6 +32,7 @@ const deleteRecipe = recipeId => {
 
 module.exports = {
     findAllRecipes,
+    findAllRecipesIn,
     findRecipeById,
     createRecipe,
     updateRecipe,

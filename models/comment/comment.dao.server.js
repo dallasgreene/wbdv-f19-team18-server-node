@@ -6,6 +6,10 @@ const findAllComments = () => {
     return commentModel.find();
 };
 
+const findAllCommentsIn = idList => {
+    return commentModel.find({ _id: { $in: idList } }, '_id title body');
+};
+
 const findCommentById = commentId => {
     return commentModel.findById(commentId);
 };
@@ -29,6 +33,7 @@ const deleteComment = commentId => {
 
 module.exports = {
     findAllComments,
+    findAllCommentsIn,
     findCommentById,
     createComment,
     updateComment,

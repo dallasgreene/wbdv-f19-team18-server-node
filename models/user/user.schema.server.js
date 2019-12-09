@@ -4,12 +4,12 @@ const userSchema = mongoose.Schema({
         lastName: String,
         username: String,
         password: String,
-        followers: [String],
-        following: [String],
+        followers: [mongoose.Types.ObjectId],
+        following: [mongoose.Types.ObjectId],
         email: String,
         diets: [String],
-        likedRecipes: [String],
-        comments: [String]
+        likedRecipes: [mongoose.Types.ObjectId],
+        comments: [mongoose.Types.ObjectId]
     }, { collection: 'user', discriminatorKey: 'type' });
 
 module.exports = userSchema;
