@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const adminSchema = mongoose.Schema({
-        createdRecipes: [String]
+        createdRecipes: [mongoose.Types.ObjectId]
     }, { discriminatorKey: 'type' });
 
 module.exports = adminSchema;
