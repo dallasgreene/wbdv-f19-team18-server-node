@@ -3,15 +3,14 @@ const commentSchema = require('./comment.schema.server');
 const commentModel = mongoose.model('CommentModel', commentSchema);
 
 const findAllComments = () => {
-    return commentModel.find();
-};
-
-const findAllCommentsIn = idList => {
-    return commentModel.find({ _id: { $in: idList } }, '_id title body');
+    return commentModel.find({ }, '_id recipe postedBy title body');
 };
 
 const findCommentById = commentId => {
-    return commentModel.findById(commentId);
+    return commentModel.findById(commentId)
+        .populate('parent', '_id postedBy title body')
+        .populate('postedBy', '_id username firstName lastName')
+        .populate('children');
 };
 
 const createComment = comment => {
@@ -33,7 +32,6 @@ const deleteComment = commentId => {
 
 module.exports = {
     findAllComments,
-    findAllCommentsIn,
     findCommentById,
     createComment,
     updateComment,
