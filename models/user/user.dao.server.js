@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const userSchema = require('./user.schema.server');
-const userModel = mongoose.model('UserModel', userSchema);
+const userModel = require('./user.model.server');
 
 const findAllUsers = () => {
     return userModel.find();
