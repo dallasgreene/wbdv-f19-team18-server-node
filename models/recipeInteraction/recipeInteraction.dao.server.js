@@ -80,6 +80,14 @@ const updateForUserDelete = userId => {
     return recipeIntModel.updateMany({ }, { $pull: { likedBy: userId } })
 };
 
+const likeRecipe = (recipeId, userId) => {
+    return recipeIntModel.updateOne({ recipe: recipeId }, { $push: { likedBy: userId } })
+};
+
+const unlikeRecipe = (recipeId, userId) => {
+    return recipeIntModel.updateOne({ recipe: recipeId }, { $pull: { likedBy: userId } })
+};
+
 const deleteRecipeInt = recipeIntId => {
     return recipeIntModel.findById(recipeIntId)
         .then(recipeInteraction => {
@@ -97,5 +105,7 @@ module.exports = {
     createRecipeInt,
     updateRecipeInt,
     updateForUserDelete,
+    likeRecipe,
+    unlikeRecipe,
     deleteRecipeInt
 };

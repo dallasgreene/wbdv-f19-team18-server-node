@@ -24,25 +24,20 @@ module.exports = app => {
     });
 
     app.put("/api/recipes/:recipeId", (req, res) => {
-        // if ()
         const recipeId = req.params.recipeId;
-        const recipe = req.body;
-        recipeDAO.updateRecipe(recipeId, recipe)
-            .then(response => res.json(response));
-    });
-
-    app.put("/api/recipes/:recipeId/likedBy/:userId", (req, res) => {
-        const recipeId = req.params.recipeId;
-        const userId = req.params.userId;
-        recipeDAO.likeRecipe(recipeId, userId)
-            .then(response => res.json(response));
-    });
-
-    app.put("/api/recipes/:recipeId/likedBy/:userId", (req, res) => {
-        const recipeId = req.params.recipeId;
-        const userId = req.params.userId;
-        recipeDAO.likeRecipe(recipeId, userId)
-            .then(response => res.json(response));
+        const likedBy = req.query.likedBy;
+        const unlikedBy = req.query.unlikedBy;
+        if (likedBy) {
+            recipeDAO.likeRecipe(recipeId, likedBy)
+                .then(response => res.json(response));
+        } else if (unlikedBy) {
+            recipeDAO.unlikeRecipe(recipeId, unlikedBy)
+                .then(response => res.json(response));
+        } else {
+            const recipe = req.body;
+            recipeDAO.updateRecipe(recipeId, recipe)
+                .then(response => res.json(response));
+        }
     });
 
     app.delete("/api/recipes/:recipeId", (req, res) => {

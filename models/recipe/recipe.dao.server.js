@@ -74,15 +74,13 @@ const updateRecipe = (recipeId, recipe) => {
 };
 
 const likeRecipe = (recipeId, userId) => {
-    return recipeModel.updateOne({ _id: recipeId }, { $push: { likedBy: userId } })
-        .then(() => findRecipeById(recipeId))
-        .catch(() => { return { status: "incorrect recipe id" } });
+    return recipeIntDAO.likeRecipe(recipeId, userId)
+        .then(() => findRecipeById(recipeId));
 };
 
 const unlikeRecipe = (recipeId, userId) => {
-    return recipeModel.updateOne({ _id: recipeId }, { $pull: { likedBy: userId } })
-        .then(() => findRecipeById(recipeId))
-        .catch(() => { return { status: "incorrect recipe id" } });
+    return recipeIntDAO.unlikeRecipe(recipeId, userId)
+        .then(() => findRecipeById(recipeId));
 };
 
 const deleteRecipe = recipeId => {
