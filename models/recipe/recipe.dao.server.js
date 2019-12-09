@@ -59,7 +59,8 @@ const findRecipeById = recipeId => {
 };
 
 const searchRecipeByTitle = title => {
-    return recipeModel.find({ title: title }, '_id title image servings readyInMinutes')
+    return recipeModel.find({ title: { $text: { $search: title, language: 'en' } } },
+        '_id title image servings readyInMinutes')
 };
 
 const createRecipe = recipe => {

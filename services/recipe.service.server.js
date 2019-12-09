@@ -2,31 +2,37 @@ const recipeDAO = require('../models/recipe/recipe.dao.server');
 
 module.exports = app => {
     app.get("/api/recipes", (req, res) => {
-        if (req.query) {
-            res.json(recipeDAO.searchRecipeByTitle(req.query.title))
+        if (req.query === {}) {
+            recipeDAO.searchRecipeByTitle(req.query.title)
+                .then(response => res.json(response));
         } else {
-            res.json(recipeDAO.findAllRecipes());
+            recipeDAO.findAllRecipes()
+                .then(response => res.json(response));
         }
     });
 
     app.get("/api/recipes/:recipeId", (req, res) => {
         const recipeId = req.params.recipeId;
-        res.json(recipeDAO.findRecipeById(recipeId));
+        recipeDAO.findRecipeById(recipeId)
+            .then(response => res.json(response));
     });
 
     app.post("/api/recipes", (req, res) => {
         const recipe = req.body;
-        res.json(recipeDAO.createRecipe(recipe));
+        recipeDAO.createRecipe(recipe)
+            .then(response => res.json(response));
     });
 
     app.put("/api/recipes/:recipeId", (req, res) => {
         const recipeId = req.params.recipeId;
         const recipe = req.body;
-        res.json(recipeDAO.updateRecipe(recipeId, recipe));
+        recipeDAO.updateRecipe(recipeId, recipe)
+            .then(response => res.json(response));
     });
 
     app.delete("/api/recipes/:recipeId", (req, res) => {
         const recipeId = req.params.recipeId;
-        res.json(recipeDAO.deleteRecipe(recipeId));
+        recipeDAO.deleteRecipe(recipeId)
+            .then(response => res.json(response));
     });
 };
