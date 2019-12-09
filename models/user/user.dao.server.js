@@ -41,8 +41,13 @@ const updateForRecipeDelete = recipeId => {
 const follow = (uid1, uid2) => {
     userModel.updateOne({ _id: uid2 }, { $push: { followers: uid1 } });
     return userModel.updateOne({ _id: uid1 }, { $push: { following: uid2 } })
-        .then(() => findUserById(uid1))
-        .catch(() => { return { status: "incorrect user id" } });
+        .then(() => findUserById(uid1));
+};
+
+const unfollow = (uid1, uid2) => {
+    userModel.updateOne({ _id: uid2 }, { $pull: { followers: uid1 } });
+    return userModel.updateOne({ _id: uid1 }, { $pull: { following: uid2 } })
+        .then(() => findUserById(uid1));
 };
 
 const deleteUser = userId => {
@@ -61,5 +66,6 @@ module.exports = {
     updateUser,
     updateForRecipeDelete,
     follow,
+    unfollow,
     deleteUser
 };
