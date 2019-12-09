@@ -2,13 +2,58 @@ const mongoose = require('mongoose');
 const recipeSchema = require('./recipe.schema.server');
 const recipeModel = mongoose.model('RecipeModel', recipeSchema);
 
+const recipePopulationSpecs = {
+    path: 'interactions',
+    select: 'likedBy comments',
+    populate: {
+        path: 'likedBy comments',
+        select: '_id username children title postedBy body',
+        populate: {
+            path: 'postedBy children',
+            select: '_id username firstName lastName children title postedBy body',
+            populate: {
+                path: 'postedBy children',
+                select: '_id username firstName lastName children title postedBy body',
+                populate: {
+                    path: 'postedBy children',
+                    select: '_id username firstName lastName children title postedBy body',
+                    populate: {
+                        path: 'postedBy children',
+                        select: '_id username firstName lastName children title postedBy body',
+                        populate: {
+                            path: 'postedBy children',
+                            select: '_id username firstName lastName children title postedBy body',
+                            populate: {
+                                path: 'postedBy children',
+                                select: '_id username firstName lastName children title postedBy body',
+                                populate: {
+                                    path: 'postedBy children',
+                                    select: '_id username firstName lastName children title postedBy body',
+                                    populate: {
+                                        path: 'postedBy children',
+                                        select: '_id username firstName lastName children title postedBy body',
+                                        populate: {
+                                            path: 'postedBy children',
+                                            select: '_id username firstName lastName children title postedBy body'
+                                        }
+                                    }
+                                }
+                            } // this is to force mongoose to populate up to 10 layers of comments.
+                        }     // -> only used for findRecipeById in order to load all comments for
+                    }         //    the detail view of the recipe.
+                }
+            }
+        }
+    }
+};
+
 const findAllRecipes = () => {
     return recipeModel.find({ }, 'title image servings readyInMinutes');
 };
 
 const findRecipeById = recipeId => {
     return recipeModel.findById(recipeId)
-        .populate('interactions', 'likedBy comments');
+        .populate(recipePopulationSpecs);
 };
 
 const createRecipe = recipe => {

@@ -14,7 +14,15 @@ const findCommentById = commentId => {
 };
 
 const createComment = comment => {
-    return commentModel.create(comment);
+    if (comment.parent) {
+        return commentModel.create(comment)
+            .then(comment => {
+                return commentModel.updateOne({ _id: comment.parent }, { $push: { children: comment._id } })
+                    .then(() => comment);
+            });
+    } else {
+        return commentModel.create(comment);
+    }
 };
 
 const updateComment = (commentId, comment) => {
