@@ -3,12 +3,12 @@ const userSchema = mongoose.Schema({
         firstName: String,
         lastName: String,
         username: String,
-        followers: Array,
-        following: Array,
+        followers: [String],
+        following: [String],
         email: String,
-        diets: Array,
-        likedRecipes: Array,
-        comments: Array
+        diets: [String],
+        likedRecipes: [String],
+        comments: [String]
     }, { collection: 'user', discriminatorKey: 'type' });
 
 module.exports = userSchema;
