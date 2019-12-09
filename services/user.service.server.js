@@ -18,13 +18,6 @@ module.exports = app => {
             .then(response => res.json(response));
     });
 
-    app.post("/api/users/:uid1/follows/:uid2", (req, res) => {
-        const uid1 = req.params.uid1;
-        const uid2 = req.params.uid2;
-        userDAO.follow(uid1, uid2)
-            .then(response => res.json(response));
-    });
-
     app.put("/api/users/:userId", (req, res) => {
         const userId = req.params.userId;
         const following = req.query.following;
