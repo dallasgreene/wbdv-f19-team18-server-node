@@ -1,11 +1,12 @@
 const userDAO = require('./user.dao.server');
 const recipeDAO = require('../recipe/recipe.dao.server');
+const commentDAO = require('../comment/comment.dao.server');
 require('../../data/db')();
 
 console.log("working!");
 
-// userDAO.findAllUsers()
-//     .then(response => console.log(response));
+userDAO.findAllUsers()
+    .then(response => console.log(response));
 
 // userDAO.findUserById('5deddf899d9d59c22c5b6bbe') //5deddafb7896b7c1fc4372dc
 //     .then(response => console.log(response));
