@@ -39,8 +39,15 @@ require('../../data/db')();
 // commentDAO.updateComment('5dedf6e6ce356ac3b4a1d997', { parent: '5dedf76d01a1b1c3be787f2e' })
 //     .then(response => console.log(response));
 
-commentDAO.findCommentById('5dedfab9386ea4c3df533ad0')
+// commentDAO.findCommentById('5dedfab9386ea4c3df533ad0')
+//     .then(response => {
+//         console.log(response.children[0].children)
+//         console.log(response)
+//     });
+
+commentDAO.findCommentsForRecipe('5deddafb7896b7c1fc4372db')
     .then(response => {
-        console.log(response.children[0].children)
         console.log(response)
+        console.log(response[0].children)
+        console.log(response[0].children[0].children)
     });

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const recipeSchema = require('./recipe.schema.server');
 const recipeModel = mongoose.model('RecipeModel', recipeSchema);
+const recipeIntDAO = require('../recipeInteraction/recipeInteraction.dao.server');
 
 const recipePopulationSpecs = {
     path: 'interactions',
@@ -48,12 +49,17 @@ const recipePopulationSpecs = {
 };
 
 const findAllRecipes = () => {
-    return recipeModel.find({ }, 'title image servings readyInMinutes');
+    return recipeModel.find({ }, '_id title image servings readyInMinutes');
 };
 
 const findRecipeById = recipeId => {
     return recipeModel.findById(recipeId)
-        .populate(recipePopulationSpecs);
+        .populate(recipePopulationSpecs)
+        .catch(() => { return { status: "incorrect recipe id" } });
+};
+
+const searchRecipeByTitle = title => {
+    return recipeModel.find({ title: title }, '_id title image servings readyInMinutes')
 };
 
 const createRecipe = recipe => {
@@ -67,14 +73,19 @@ const updateRecipe = (recipeId, recipe) => {
 };
 
 const deleteRecipe = recipeId => {
-    return recipeModel.deleteOne({ _id: recipeId })
-        .then(() => findAllRecipes())
-        .catch(() => { return { status: "incorrect recipe id" } });
+    return recipeModel.findById(recipeId)
+        .then(recipe => {
+            recipeIntDAO.deleteRecipeInt(recipe.interactions);
+            return recipeModel.deleteOne({ _id: recipeId })
+                .then(() => findAllRecipes())
+                .catch(() => { return { status: "incorrect recipe id" } });
+        });
 };
 
 module.exports = {
     findAllRecipes,
     findRecipeById,
+    searchRecipeByTitle,
     createRecipe,
     updateRecipe,
     deleteRecipe

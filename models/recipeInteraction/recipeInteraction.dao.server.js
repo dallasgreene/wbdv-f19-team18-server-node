@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const recipeInteractionSchema = require('./recipeInteraction.schema.server');
 const recipeIntModel = mongoose.model('RecipeInteractionModel', recipeInteractionSchema);
+const userDAO = require('../user/user.dao.server');
+const commentDAO = require('../comment/comment.dao.server');
 
 const recipePopulationSpecs = {
     path: 'likedBy comments',
@@ -74,9 +76,17 @@ const updateRecipeInt = (recipeIntId, recipeInteraction) => {
         .catch(() => { return { status: "incorrect recipeInteraction id" } });
 };
 
+const updateForUserDelete = userId => {
+    return recipeIntModel.updateMany({ }, { $pull: { likedBy: userId } })
+};
+
 const deleteRecipeInt = recipeIntId => {
-    return recipeIntModel.deleteOne({ _id: recipeIntId })
-        .then(() => findAllRecipeInts())
+    return recipeIntModel.findById(recipeIntId)
+        .then(recipeInteraction => {
+            userDAO.updateForRecipeDelete(recipeInteraction.recipe);
+            commentDAO.deleteForRecipeDelete(recipeInteraction.recipe);
+            return recipeIntModel.deleteOne({ _id: recipeIntId });
+        })
         .catch(() => { return { status: "incorrect recipeInteraction id" } });
 };
 
@@ -86,5 +96,6 @@ module.exports = {
     findInteractionForRecipeId,
     createRecipeInt,
     updateRecipeInt,
+    updateForUserDelete,
     deleteRecipeInt
 };

@@ -2,6 +2,43 @@ const mongoose = require('mongoose');
 const commentSchema = require('./comment.schema.server');
 const commentModel = mongoose.model('CommentModel', commentSchema);
 
+const recipePopulationSpecs = {
+    path: 'postedBy children',
+    select: '_id username firstName lastName children title postedBy body',
+    populate: {
+        path: 'postedBy children',
+        select: '_id username firstName lastName children title postedBy body',
+        populate: {
+            path: 'postedBy children',
+            select: '_id username firstName lastName children title postedBy body',
+            populate: {
+                path: 'postedBy children',
+                select: '_id username firstName lastName children title postedBy body',
+                populate: {
+                    path: 'postedBy children',
+                    select: '_id username firstName lastName children title postedBy body',
+                    populate: {
+                        path: 'postedBy children',
+                        select: '_id username firstName lastName children title postedBy body',
+                        populate: {
+                            path: 'postedBy children',
+                            select: '_id username firstName lastName children title postedBy body',
+                            populate: {
+                                path: 'postedBy children',
+                                select: '_id username firstName lastName children title postedBy body',
+                                populate: {
+                                    path: 'postedBy children',
+                                    select: '_id username firstName lastName children title postedBy body'
+                                }
+                            }
+                        }
+                    } // this is to force mongoose to populate up to 10 layers of comments.
+                }     // -> only used when getting a specific interactions object in order
+            }         //    to load all comments for the detail view of a recipe.
+        }
+    }
+};
+
 const findAllComments = () => {
     return commentModel.find({ }, '_id recipe postedBy title body');
 };
@@ -10,7 +47,13 @@ const findCommentById = commentId => {
     return commentModel.findById(commentId)
         .populate('parent', '_id postedBy title body')
         .populate('postedBy', '_id username firstName lastName')
-        .populate('children');
+        .populate('children')
+        .catch(() => { return { status: "incorrect comment id" } });
+};
+
+const findCommentsForRecipe = recipeId => {
+    return commentModel.find({ recipe: recipeId, parent: null }, '_id children title postedBy body')
+        .populate(recipePopulationSpecs);
 };
 
 const createComment = comment => {
@@ -34,21 +77,29 @@ const updateComment = (commentId, comment) => {
 const deleteComment = commentId => {
     commentModel.findById(commentId)
         .then(comment => {
-            if (comment.children) {
-                commentModel.updateOne({ _id: commentId }, { $set: { title: "[Comment Deleted]", body: "" } })
-            } else {
-                commentModel.deleteOne({ _id: commentId })
-            }
+            return commentModel.updateOne({ _id: commentId }, { $set: { title: "[Comment Deleted]", body: "" } })
+                .then(() => comment.recipe);
         })
-        .then(() => findAllComments())
+        .then(recipeId => findCommentsForRecipe(recipeId))
         .catch(() => { return { status: "incorrect comment id" } });
+};
+
+const deleteForRecipeDelete = recipeId => {
+    return commentModel.deleteMany({ recipe: recipeId });
+};
+
+const deleteForUserDelete = userId => {
+    return commentModel.deleteMany({ postedBy: userId });
 };
 
 
 module.exports = {
     findAllComments,
     findCommentById,
+    findCommentsForRecipe,
     createComment,
     updateComment,
-    deleteComment
+    deleteComment,
+    deleteForRecipeDelete,
+    deleteForUserDelete
 };
