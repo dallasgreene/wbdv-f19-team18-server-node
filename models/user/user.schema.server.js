@@ -10,6 +10,6 @@ const userSchema = mongoose.Schema({
         diets: Array,
         likedRecipes: Array,
         comments: Array
-    }, { collection: 'user' });
+    }, { collection: 'user', discriminatorKey: 'type' });
 
 module.exports = userSchema;
