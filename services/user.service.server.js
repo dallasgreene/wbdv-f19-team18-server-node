@@ -21,8 +21,8 @@ module.exports = app => {
         res.json(userDAO.updateUser(userId, user));
     });
 
-    app.get("/api/users/:userId", (req, res) => {
+    app.delete("/api/users/:userId", (req, res) => {
         const userId = req.params.userId;
-        res.json(userDAO.findUserById(userId));
+        res.json(userDAO.deleteUser(userId));
     });
 };

@@ -21,8 +21,8 @@ module.exports = app => {
         res.json(adminDAO.updateAdmin(adminId, admin));
     });
 
-    app.get("/api/admins/:adminId", (req, res) => {
+    app.delete("/api/admins/:adminId", (req, res) => {
         const adminId = req.params.adminId;
-        res.json(adminDAO.findAdminById(adminId));
+        res.json(adminDAO.deleteAdmin(adminId));
     });
 };
