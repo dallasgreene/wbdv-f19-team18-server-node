@@ -5,7 +5,7 @@ require('./data/db')();
 
 const bodyParser = require('body-parser');
 
-app.listen(4000);
+app.listen(process.env.PORT || 8080);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
