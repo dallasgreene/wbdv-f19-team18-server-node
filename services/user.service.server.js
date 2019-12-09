@@ -15,6 +15,12 @@ module.exports = app => {
         res.json(userDAO.createUser(user));
     });
 
+    app.post("/api/users/:uid1/follows/:uid2", (req, res) => {
+        const uid1 = req.params.uid1;
+        const uid2 = req.params.uid2;
+        res.json(userDAO.follow(uid1, uid2));
+    });
+
     app.put("/api/users/:userId", (req, res) => {
         const userId = req.params.userId;
         const user = req.body;
