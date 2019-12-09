@@ -2,7 +2,11 @@ const recipeDAO = require('../models/recipe/recipe.dao.server');
 
 module.exports = app => {
     app.get("/api/recipes", (req, res) => {
-        res.json(recipeDAO.findAllRecipes());
+        if (req.query) {
+            res.json(recipeDAO.searchRecipeByTitle(req.query.title))
+        } else {
+            res.json(recipeDAO.findAllRecipes());
+        }
     });
 
     app.get("/api/recipes/:recipeId", (req, res) => {
