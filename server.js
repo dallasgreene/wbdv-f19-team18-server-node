@@ -26,3 +26,4 @@ app.get("/hello", (req, res) => {
 });
 
 require('./services/user.service.server')(app);
+require('./services/admin.service.server')(app);
