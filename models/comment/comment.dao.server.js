@@ -32,7 +32,14 @@ const updateComment = (commentId, comment) => {
 };
 
 const deleteComment = commentId => {
-    return commentModel.deleteOne({ _id: commentId })
+    commentModel.findById(commentId)
+        .then(comment => {
+            if (comment.children) {
+                commentModel.updateOne({ _id: commentId }, { $set: { title: "[Comment Deleted]", body: "" } })
+            } else {
+                commentModel.deleteOne({ _id: commentId })
+            }
+        })
         .then(() => findAllComments())
         .catch(() => { return { status: "incorrect comment id" } });
 };
