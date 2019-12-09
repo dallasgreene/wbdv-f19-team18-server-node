@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const commentSchema = mongoose.Schema({
         title: String,
-        postedBy: mongoose.Types.ObjectId,
+        postedBy: { type: mongoose.Types.ObjectId, ref: 'UserModel' },
         body: String,
-        children: [mongoose.Types.ObjectId]
+        children: [{ type: mongoose.Types.ObjectId, ref: 'CommentModel' }]
     }, { collection: 'comment' });
 
 module.exports = commentSchema;
