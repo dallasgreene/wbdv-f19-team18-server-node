@@ -21,7 +21,8 @@ app.use((req, res, next) => {
 });
 
 
-
 app.get("/hello", (req, res) => {
     res.json({ message: "hello!!" });
 });
+
+require('./services/user.service.server')(app);
