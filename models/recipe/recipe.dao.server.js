@@ -3,15 +3,12 @@ const recipeSchema = require('./recipe.schema.server');
 const recipeModel = mongoose.model('RecipeModel', recipeSchema);
 
 const findAllRecipes = () => {
-    return recipeModel.find();
-};
-
-const findAllRecipesIn = idList => {
-    return recipeModel.find({ _id: { $in: idList } }, '_id title image readyInMinutes servings');
+    return recipeModel.find({ }, 'title image servings readyInMinutes');
 };
 
 const findRecipeById = recipeId => {
-    return recipeModel.findById(recipeId);
+    return recipeModel.findById(recipeId)
+        .populate('interactions', 'likedBy comments');
 };
 
 const createRecipe = recipe => {
@@ -32,7 +29,6 @@ const deleteRecipe = recipeId => {
 
 module.exports = {
     findAllRecipes,
-    findAllRecipesIn,
     findRecipeById,
     createRecipe,
     updateRecipe,
