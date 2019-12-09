@@ -59,7 +59,7 @@ const findRecipeById = recipeId => {
 };
 
 const searchRecipeByTitle = title => {
-    return recipeModel.find({ title: { $text: { $search: title, language: 'en' } } },
+    return recipeModel.find({ $text: { $search: title, $language: 'en' } },
         '_id title image servings readyInMinutes')
 };
 
@@ -69,6 +69,18 @@ const createRecipe = recipe => {
 
 const updateRecipe = (recipeId, recipe) => {
     return recipeModel.updateOne({ _id: recipeId }, { $set: recipe })
+        .then(() => findRecipeById(recipeId))
+        .catch(() => { return { status: "incorrect recipe id" } });
+};
+
+const likeRecipe = (recipeId, userId) => {
+    return recipeModel.updateOne({ _id: recipeId }, { $push: { likedBy: userId } })
+        .then(() => findRecipeById(recipeId))
+        .catch(() => { return { status: "incorrect recipe id" } });
+};
+
+const unlikeRecipe = (recipeId, userId) => {
+    return recipeModel.updateOne({ _id: recipeId }, { $pull: { likedBy: userId } })
         .then(() => findRecipeById(recipeId))
         .catch(() => { return { status: "incorrect recipe id" } });
 };
@@ -89,5 +101,7 @@ module.exports = {
     searchRecipeByTitle,
     createRecipe,
     updateRecipe,
+    likeRecipe,
+    unlikeRecipe,
     deleteRecipe
 };

@@ -11,4 +11,6 @@ const recipeSchema = mongoose.Schema({
         interactions: { type: mongoose.Types.ObjectId, ref: 'RecipeInteractionModel' }
     }, { collection: 'recipe' });
 
+recipeSchema.index({ title: 1 });
+
 module.exports = recipeSchema;
