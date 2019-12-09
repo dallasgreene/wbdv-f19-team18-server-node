@@ -7,7 +7,34 @@ const findAllUsers = () => {
 };
 
 const findUserById = userId => {
-    return userModel.find({ _id: userId });
+    return userModel.findById(userId);
 };
 
-module.exports = userModel;
+const findUserByUsername = username => {
+    return userModel.findOne({ username: username });
+};
+
+const createUser = user => {
+    return userModel.create(user);
+};
+
+const updateUser = (userId, user) => {
+    return userModel.updateOne({ _id: userId }, { $set: user })
+        .then(() => findUserById(userId))
+        .catch(() => { return { status: "incorrect user id" } });
+};
+
+const deleteUser = userId => {
+    return userModel.deleteOne({ _id: userId })
+        .then(() => findAllUsers())
+        .catch(() => { return { status: "incorrect user id" } });
+};
+
+module.exports = {
+    findAllUsers,
+    findUserById,
+    findUserByUsername,
+    createUser,
+    updateUser,
+    deleteUser
+};
