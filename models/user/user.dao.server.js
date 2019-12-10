@@ -24,6 +24,17 @@ const findUserByUsername = username => {
         .catch(() => { return { status: "incorrect username" } });
 };
 
+const login = (username, password) => {
+    return userModel.find({ username: username, password: password })
+        .then(response => {
+            if (response.length === 1) {
+                return findUserById(response[0]._id);
+            } else {
+                return { error: "invalid login" };
+            }
+        });
+};
+
 const createUser = user => {
     return userModel.create(user);
 };
@@ -62,6 +73,7 @@ module.exports = {
     findAllUsers,
     findUserById,
     findUserByUsername,
+    login,
     createUser,
     updateUser,
     updateForRecipeDelete,

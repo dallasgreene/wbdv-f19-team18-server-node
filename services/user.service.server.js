@@ -6,6 +6,17 @@ module.exports = app => {
             .then(response => res.json(response));
     });
 
+    app.get("/api/users/login", (req, res) => {
+        const username = req.body.username;
+        const password = req.body.password;
+        if (username && password) {
+            userDAO.login(username, password)
+                .then(response => res.json(response));
+        } else {
+            res.json({ error: "username and password not provided" });
+        }
+    });
+
     app.get("/api/users/:userId", (req, res) => {
         const userId = req.params.userId;
         userDAO.findUserById(userId)

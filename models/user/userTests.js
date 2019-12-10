@@ -5,8 +5,8 @@ require('../../data/db')();
 
 console.log("working!");
 
-userDAO.findAllUsers()
-    .then(response => console.log(response));
+// userDAO.findAllUsers()
+//     .then(response => console.log(response));
 
 // userDAO.findUserById('5deddf899d9d59c22c5b6bbe') //5deddafb7896b7c1fc4372dc
 //     .then(response => console.log(response));
@@ -39,7 +39,7 @@ userDAO.findAllUsers()
 //     // })
 //     .then(response => console.log(response));
 
-// userDAO.updateUser(123, {username: 'dallas'})
+// userDAO.updateUser('5deee4ea0207bacae2f68060', {password: 'password'})
 //     .then(response => console.log(response));
 
 // userDAO.deleteUser('5deddfab8a3cdec22ffba7c4') // 5dedc769c4f31ac0a66dfc5c 5dedc7582fb778c0a385b23b
