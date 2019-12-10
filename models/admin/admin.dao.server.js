@@ -34,6 +34,14 @@ const updateAdmin = (adminId, admin) => {
         .catch(() => { return { status: "incorrect admin id" } });
 };
 
+const updateForRecipeCreate = (adminId, recipeId) => {
+    return adminModel.updateOne({ _id: adminId }, { $push: { createdRecipes: recipeId } });
+};
+
+const updateForRecipeDelete = (adminId, recipeId) => {
+    return adminModel.updateOne({ _id: adminId }, { $pull: { createdRecipes: recipeId } });
+};
+
 const deleteAdmin = adminId => {
     return adminModel.deleteOne({ _id: adminId })
         .then(() => findAllAdmins())
@@ -46,5 +54,7 @@ module.exports = {
     findAdminByUsername,
     createAdmin,
     updateAdmin,
+    updateForRecipeCreate,
+    updateForRecipeDelete,
     deleteAdmin
 };

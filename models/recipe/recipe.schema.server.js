@@ -8,6 +8,7 @@ const recipeSchema = mongoose.Schema({
         preparationMinutes: Number,
         cookingMinutes: Number,
         diets: [String],
+        author: { type: mongoose.Types.ObjectId, ref: 'AdminModel' },
         interactions: { type: mongoose.Types.ObjectId, ref: 'RecipeInteractionModel' }
     }, { collection: 'recipe' });
 

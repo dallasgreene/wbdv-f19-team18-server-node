@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const recipeSchema = require('./recipe.schema.server');
 const recipeModel = mongoose.model('RecipeModel', recipeSchema);
 const recipeIntDAO = require('../recipeInteraction/recipeInteraction.dao.server');
+const adminDAO = require('../admin/admin.dao.server');
 
 const recipePopulationSpecs = {
     path: 'interactions',
@@ -64,7 +65,11 @@ const searchRecipeByTitle = title => {
 };
 
 const createRecipe = recipe => {
-    return recipeModel.create(recipe);
+    return recipeModel.create(recipe)
+        .then(response => {
+            return adminDAO.updateForRecipeCreate(response.author, response._id)
+                .then(() => response);
+        })
 };
 
 const updateRecipe = (recipeId, recipe) => {
@@ -87,9 +92,9 @@ const deleteRecipe = recipeId => {
     return recipeModel.findById(recipeId)
         .then(recipe => {
             recipeIntDAO.deleteRecipeInt(recipe.interactions);
+            adminDAO.updateForRecipeDelete(recipe.author, recipeId);
             return recipeModel.deleteOne({ _id: recipeId })
-                .then(() => findAllRecipes())
-                .catch(() => { return { status: "incorrect recipe id" } });
+                .then(() => findAllRecipes());
         });
 };
 
