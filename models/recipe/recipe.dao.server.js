@@ -74,8 +74,7 @@ const createRecipe = recipe => {
                     comments: []
                 }))
                 .then(recipeInt =>
-                    recipeModel.updateOne({ _id: recipeInt.recipe }, { $set: { interactions: recipeInt._id } }))
-                .then(() => response);
+                    recipeModel.updateOne({ _id: recipeInt.recipe }, { $set: { interactions: recipeInt._id } }));
         })
 };
 
@@ -98,9 +97,9 @@ const unlikeRecipe = (recipeId, userId) => {
 const deleteRecipe = recipeId => {
     return recipeModel.findById(recipeId)
         .then(recipe => {
-            recipeIntDAO.deleteRecipeInt(recipe.interactions);
-            adminDAO.updateForRecipeDelete(recipe.author, recipeId);
-            return recipeModel.deleteOne({ _id: recipeId })
+            return recipeIntDAO.deleteRecipeInt(recipe.interactions)
+                .then(() => adminDAO.updateForRecipeDelete(recipe.author, recipeId))
+                .then(() => recipeModel.deleteOne({ _id: recipeId }))
                 .then(() => findAllRecipes());
         });
 };
