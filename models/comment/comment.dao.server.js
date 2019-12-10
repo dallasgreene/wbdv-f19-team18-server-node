@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const commentSchema = require('./comment.schema.server');
 const commentModel = mongoose.model('CommentModel', commentSchema);
+const userDAO = require('../user/user.dao.server');
+const recipeIntDAO = require('../recipeInteraction/recipeInteraction.dao.server');
 
 const recipePopulationSpecs = {
     path: 'postedBy children',
@@ -57,15 +59,22 @@ const findCommentsForRecipe = recipeId => {
 };
 
 const createComment = comment => {
-    if (comment.parent) {
-        return commentModel.create(comment)
-            .then(comment => {
-                return commentModel.updateOne({ _id: comment.parent }, { $push: { children: comment._id } })
-                    .then(() => comment);
-            });
-    } else {
-        return commentModel.create(comment);
-    }
+    const updateParent = () => {
+        if (comment.parent) {
+            return commentModel.create(comment)
+                .then(comment => {
+                    return commentModel.updateOne({ _id: comment.parent }, { $push: { children: comment._id } })
+                        .then(() => comment);
+                });
+        } else {
+            return commentModel.create(comment);
+        }
+    };
+    updateParent().then(response => {
+        return userDAO.updateForCommentCreate(response.postedBy, response._id)
+            .then(() => recipeIntDAO.updateForCommentCreate(response.recipe, response._id))
+            .then(() => response);
+    })
 };
 
 const updateComment = (commentId, comment) => {

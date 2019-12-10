@@ -76,6 +76,10 @@ const updateRecipeInt = (recipeIntId, recipeInteraction) => {
         .catch(() => { return { status: "incorrect recipeInteraction id" } });
 };
 
+const updateForCommentCreate = (recipeId, commentId) => {
+    return recipeIntModel.updateOne({ recipe: recipeId }, { $push: { comments: commentId } })
+};
+
 const updateForUserDelete = userId => {
     return recipeIntModel.updateMany({ }, { $pull: { likedBy: userId } })
 };
@@ -104,6 +108,7 @@ module.exports = {
     findInteractionForRecipeId,
     createRecipeInt,
     updateRecipeInt,
+    updateForCommentCreate,
     updateForUserDelete,
     likeRecipe,
     unlikeRecipe,

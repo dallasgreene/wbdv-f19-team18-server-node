@@ -45,8 +45,12 @@ const updateUser = (userId, user) => {
         .catch(() => { return { status: "incorrect user id" } });
 };
 
+const updateForCommentCreate = (userId, commentId) => {
+    return userModel.updateOne({ _id: userId }, { $push: { comments: commentId } });
+};
+
 const updateForRecipeDelete = recipeId => {
-    return userModel.updateMany({ }, { $pull: { likedRecipes: recipeId, comments: { recipe: recipeId } } })
+    return userModel.updateMany({ }, { $pull: { likedRecipes: recipeId, comments: { recipe: recipeId } } });
 };
 
 const follow = (uid1, uid2) => {
@@ -76,6 +80,7 @@ module.exports = {
     login,
     createUser,
     updateUser,
+    updateForCommentCreate,
     updateForRecipeDelete,
     follow,
     unfollow,
