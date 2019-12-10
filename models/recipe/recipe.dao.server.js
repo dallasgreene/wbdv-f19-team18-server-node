@@ -74,7 +74,8 @@ const createRecipe = recipe => {
                     comments: []
                 }))
                 .then(recipeInt =>
-                    recipeModel.updateOne({ _id: recipeInt.recipe }, { $set: { interactions: recipeInt._id } }));
+                    recipeModel.updateOne({ _id: recipeInt.recipe }, { $set: { interactions: recipeInt._id } }))
+                .then(() => findRecipeById(response._id));
         })
 };
 
