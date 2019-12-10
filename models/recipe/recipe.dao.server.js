@@ -73,6 +73,8 @@ const createRecipe = recipe => {
                     likedBy: [],
                     comments: []
                 }))
+                .then(recipeInt =>
+                    recipeModel.updateOne({ _id: recipeInt.recipe }, { $set: { interactions: recipeInt._id } }))
                 .then(() => response);
         })
 };
