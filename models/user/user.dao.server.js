@@ -45,6 +45,14 @@ const updateUser = (userId, user) => {
         .catch(() => { return { status: "incorrect user id" } });
 };
 
+const updateForRecipeLike = (recipeId, userId) => {
+    return userModel.updateOne({ _id: userId }, { $push: { likedRecipes: recipeId } });
+};
+
+const updateForRecipeUnlike = (recipeId, userId) => {
+    return userModel.updateOne({ _id: userId }, { $pull: { likedRecipes: recipeId } });
+};
+
 const updateForCommentCreate = (userId, commentId) => {
     return userModel.updateOne({ _id: userId }, { $push: { comments: commentId } });
 };
@@ -82,6 +90,8 @@ module.exports = {
     updateUser,
     updateForCommentCreate,
     updateForRecipeDelete,
+    updateForRecipeLike,
+    updateForRecipeUnlike,
     follow,
     unfollow,
     deleteUser
