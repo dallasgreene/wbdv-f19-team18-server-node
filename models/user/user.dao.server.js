@@ -27,7 +27,7 @@ const findUserByUsername = username => {
 const login = (username, password) => {
     return userModel.find({ username: username, password: password })
         .then(response => {
-            if (response.length > 1) {
+            if (response.length > 0) {
                 return findUserById(response[0]._id);
             } else {
                 return { error: "invalid login" };
