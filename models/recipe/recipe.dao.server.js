@@ -3,7 +3,6 @@ const recipeSchema = require('./recipe.schema.server');
 const recipeModel = mongoose.model('RecipeModel', recipeSchema);
 const recipeIntDAO = require('../recipeInteraction/recipeInteraction.dao.server');
 const adminDAO = require('../admin/admin.dao.server');
-const userDAO = require('../user/user.dao.server');
 
 const recipePopulationSpecs = {
     path: 'interactions',
@@ -87,13 +86,11 @@ const updateRecipe = (recipeId, recipe) => {
 };
 
 const likeRecipe = (recipeId, userId) => {
-    return recipeIntDAO.likeRecipe(recipeId, userId)
-        .then(() => userDAO.updateForRecipeLike(recipeId, userId));
+    return recipeIntDAO.likeRecipe(recipeId, userId);
 };
 
 const unlikeRecipe = (recipeId, userId) => {
-    return recipeIntDAO.unlikeRecipe(recipeId, userId)
-        .then(() => userDAO.updateForRecipeUnlike(recipeId, userId));
+    return recipeIntDAO.unlikeRecipe(recipeId, userId);
 };
 
 const deleteRecipe = recipeId => {
