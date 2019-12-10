@@ -86,13 +86,11 @@ const updateRecipe = (recipeId, recipe) => {
 };
 
 const likeRecipe = (recipeId, userId) => {
-    return recipeIntDAO.likeRecipe(recipeId, userId)
-        .then(() => findRecipeById(recipeId));
+    return recipeIntDAO.likeRecipe(recipeId, userId);
 };
 
 const unlikeRecipe = (recipeId, userId) => {
-    return recipeIntDAO.unlikeRecipe(recipeId, userId)
-        .then(() => findRecipeById(recipeId));
+    return recipeIntDAO.unlikeRecipe(recipeId, userId);
 };
 
 const deleteRecipe = recipeId => {
