@@ -68,6 +68,11 @@ const createRecipe = recipe => {
     return recipeModel.create(recipe)
         .then(response => {
             return adminDAO.updateForRecipeCreate(response.author, response._id)
+                .then(() => recipeIntDAO.createRecipeInt({
+                    recipe: response._id,
+                    likedBy: [],
+                    comments: []
+                }))
                 .then(() => response);
         })
 };
