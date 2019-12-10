@@ -6,7 +6,7 @@ module.exports = app => {
             .then(response => res.json(response));
     });
 
-    app.get("/api/users/login", (req, res) => {
+    app.post("/api/users/login", (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
         if (username && password) {
